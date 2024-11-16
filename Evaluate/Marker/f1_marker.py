@@ -12,6 +12,10 @@ def calc_f1_score(file_path):
             answer = line["answer"]
             generated_answer = line["generated_answer"]
 
+            if not generated_answer.strip():
+                print(f"Skipping index {i} due to empty generated_answer.")
+                continue
+            
             answer = answer.replace(".", " ")
             answer = answer.replace("\n", " ")
             answer = answer.replace("\t", " ")
