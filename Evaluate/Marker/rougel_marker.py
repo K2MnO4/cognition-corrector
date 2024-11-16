@@ -12,7 +12,7 @@ def calc_rl_score(file_path):
             answer = line.get("answer", "").replace("\n", " ").replace("\t", " ")
             generated_answer = line.get("generated_answer", "").replace("\n", " ").replace("\t", " ")
 
-            # 检查 answer 和 generated_answer 是否为空
+            # Check if answer and generated_answer are empty
             if not generated_answer:
                 print(f"Warning: Generated answer is empty at line {i}, skipping this entry.")
                 continue
@@ -20,10 +20,10 @@ def calc_rl_score(file_path):
                 print(f"Warning: Reference answer is empty at line {i}, skipping this entry.")
                 continue
 
-            # 计算 ROUGE 分数
+            # caculate ROUGE 
             rouge = Rouge()
             rouge_score = rouge.get_scores(hyps=generated_answer, refs=answer)
             r_l_score_list.append(rouge_score[0]["rouge-l"]["f"])
 
-    # 计算 ROUGE-L 分数的平均值
+    # Calculate the mean of the ROUGE-L scores
     return np.mean(r_l_score_list) if r_l_score_list else 0
