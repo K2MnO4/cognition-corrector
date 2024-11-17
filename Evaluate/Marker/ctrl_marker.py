@@ -5,13 +5,13 @@ import numpy as np
 from tqdm import tqdm
 
 # This function is only for evaluating the score in consistency
-def calc_ctrl_score(file_path):
+def calc_ctrl_score(file_path, root_path):
     task = "topic"
     # device = "cpu"
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    scorer = CTRLEval(iwf_dir='/home/ubuntu-user/Desktop/cognition-corrector-dev/Evaluate/CTRLEval/data/iwf_full.txt',
-                        prompt_dir='/home/ubuntu-user/Desktop/cognition-corrector-dev/Evaluate/CTRLEval/data/prompt_{}.txt'.format(task),
-                        verbal_dir='/home/ubuntu-user/Desktop/cognition-corrector-dev/Evaluate/CTRLEval/data/verbal_{}.txt'.format(task),
+    scorer = CTRLEval(iwf_dir=f'{root_path}/Evaluate/CTRLEval/data/iwf_full.txt',
+                        prompt_dir=f'{root_path}/Evaluate/CTRLEval/data/prompt_{task}.txt',
+                        verbal_dir=f'{root_path}/Evaluate/CTRLEval/data/verbal_{task}.txt',
                         device=device)
     prefix_list = []
     data_list = []
