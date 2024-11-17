@@ -26,4 +26,4 @@ def calc_rl_score(file_path):
             r_l_score_list.append(rouge_score[0]["rouge-l"]["f"])
 
     # Calculate the mean of the ROUGE-L scores
-    return np.mean(r_l_score_list) if r_l_score_list else 0
+    return np.nanmean(r_l_score_list) if r_l_score_list else 0

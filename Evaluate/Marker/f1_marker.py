@@ -37,4 +37,4 @@ def calc_f1_score(file_path):
 
             f1_score_list.append(f1_score)
 
-    return np.mean(f1_score_list)
+    return np.nanmean(f1_score_list)

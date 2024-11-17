@@ -36,5 +36,5 @@ def calc_ctrl_score(file_path, root_path):
             data_list.append(data)
     ctrl_score = scorer.score(aspect="cons",  data=data_list, prefix=prefix_list)
 
-    return np.mean(ctrl_score)
+    return np.nanmean(ctrl_score)
 
