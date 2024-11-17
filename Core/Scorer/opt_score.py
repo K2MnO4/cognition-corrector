@@ -11,12 +11,12 @@ class OPTScorer:
         self.device = device
 
         if 'gpt2' in checkpoint:
-            print('gpt2 model')
+            # print('gpt2 model')
             self.tokenizer = GPT2Tokenizer.from_pretrained(checkpoint)
             self.model = GPT2LMHeadModel.from_pretrained(checkpoint).to(self.device)
             max_length = 1000
         elif 'gpt-j' in checkpoint:
-            print('gpt-j model')
+            # print('gpt-j model')
             self.tokenizer = GPT2Tokenizer.from_pretrained(checkpoint)
             self.model = GPTJForCausalLM.from_pretrained(checkpoint).to(self.device)
             max_length = 2000
@@ -25,7 +25,7 @@ class OPTScorer:
             self.model = OPTForCausalLM.from_pretrained(checkpoint).to(self.device)
             max_length = 2000
         self.max_length = max_length
-        print('max_length: ', max_length)
+        # print('max_length: ', max_length)
         self.model.eval()
 
     def score(self, srcs, tgts, prompt_text, batch_size):
@@ -44,13 +44,13 @@ class OPTScorer:
 
         score_list = []
         for i,(src, tgt) in enumerate(zip(srcs, tgts)):
-            print('process:'+str(i) + '/'+str(len(srcs)) )
+            # print('process:'+str(i) + '/'+str(len(srcs)) )
             new_src = trunk_input(src, tgt, src, max_length=self.max_length)
             src = new_src
             text = src + prompt_text + tgt
-            if i <1:
-                print('text: ', text)
-                print('tgt: ', tgt)
+            # if i <1:
+            #     print('text: ', text)
+            #     print('tgt: ', tgt)
             input_ids = self.tokenizer.encode(text)
             tgt_ids = self.tokenizer.encode(tgt)[1:]
             output_ids = [-100] * len(input_ids)
@@ -68,7 +68,7 @@ class OPTScorer:
                 loss = loss.item()
                 score = -loss
                 score_list.append(score)
-                print('score: ',score)
+                # print('score: ',score)
             except RuntimeError:
                 # traceback.print_exc()
                 print('input_ids: ',input_ids)

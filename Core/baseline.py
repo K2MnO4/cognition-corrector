@@ -18,8 +18,8 @@ def encode_prompt(tokenizer, prompt):
 
 def generate_response(model, tokenizer, prompt, max_new_tokens = 256, top_k = 50, top_p = 0.95):
     inputs = encode_prompt(tokenizer, prompt)
-    input_ids = inputs['input_ids'].to(device)
-    attention_mask = inputs['attention_mask'].to(device)
+    input_ids = inputs['input_ids'].to(model.device)
+    attention_mask = inputs['attention_mask'].to(model.device)
 
     output = model.generate(
         input_ids,
