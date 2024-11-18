@@ -16,4 +16,4 @@ model:"alpaca-lora-7b"
 LiveMedQA2017
 model:"gpt2-large-medical"  
 model:"medalpaca-lora-7b"       f1:0.13401951711370147   rouge-l:0.1333015474098145      ctrl:-1.8891887381127208     med-nil:0.40384615384615385 0.34455128205128205
-model:"alpaca-lora-7b_L"        ctrl:-1.8317086100149447  med-nil:0.584070796460177	0.4869363674673409
+model:"alpaca-lora-7b_L"                                                                 ctrl:-1.8317086100149447     med-nil:0.584070796460177	  0.4869363674673409
