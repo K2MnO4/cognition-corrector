@@ -24,25 +24,25 @@ def generate_response(model, tokenizer, prompt, max_new_tokens = 256, top_k = 50
     inputs = encode_prompt(tokenizer, prompt)
     input_ids = inputs['input_ids'].to(model.device)
     attention_mask = inputs['attention_mask'].to(model.device)
-
-    output = model.generate(
-        input_ids,
-        attention_mask=attention_mask,
-        # max_length=max_length,
-        max_new_tokens = max_new_tokens,
-        num_return_sequences=1,
-        do_sample=True,
-        top_k=top_k,
-        top_p=top_p,
-        pad_token_id=tokenizer.eos_token_id,
-        eos_token_id=tokenizer.eos_token_id,
-    )
+    with torch.no_grad:
+        output = model.generate(
+            input_ids,
+            attention_mask=attention_mask,
+            # max_length=max_length,
+            max_new_tokens = max_new_tokens,
+            num_return_sequences=1,
+            do_sample=True,
+            top_k=top_k,
+            top_p=top_p,
+            pad_token_id=tokenizer.eos_token_id,
+            eos_token_id=tokenizer.eos_token_id,
+        )
     generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
     prompt_length = len(tokenizer.decode(input_ids[0], skip_special_tokens=True))
     return  generated_text[prompt_length + 1:]
 
 if __name__ == '__main__':
-
+    torch.cuda.empty_cache()
     parser = argparse.ArgumentParser()
     parser.add_argument("--input_file", type=str) # project relative path
     parser.add_argument("--output_file", type=str) # project relative path

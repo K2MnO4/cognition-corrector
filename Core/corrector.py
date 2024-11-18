@@ -109,14 +109,11 @@ if __name__ == '__main__':
     parser.add_argument("--threshold_consistency", type=float, default=-5)
     parser.add_argument("--threshold_entailment", type=float, default=0.8)
     parser.add_argument("--max_loop", type=int, default=1)
+    parser.add_argument("--model_name", type=str, default="Locutusque/gpt2-large-medical") # prompt model
     parser.add_argument("--gptscore_model_name", type=str, default="opt-350m")
     args = parser.parse_args()
 
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    model_name = "Locutusque/gpt2-large-medical"
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForCausalLM.from_pretrained(model_name).to(device)
-
+    device = 'cuda'"Locutusque/gpt2-large-medical"
     with jsonlines.open(args.input_file) as reader:
         reader = list(reader)
         for i, line in tqdm(enumerate(reader), total=len(reader)):
