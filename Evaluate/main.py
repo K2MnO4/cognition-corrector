@@ -18,8 +18,8 @@ if __name__ == "__main__":
     parser.add_argument("--root_path", type=str, default=f"{current_directory}")
     args = parser.parse_args()
 
-    print(f"The average f1 score in {args.input_file}: {calc_f1_score(args.input_file)}")
-    print(f"The average rouge-l score in {args.input_file}: {calc_rl_score(args.input_file)}")
+    # print(f"The average f1 score in {args.input_file}: {calc_f1_score(args.input_file)}")
+    # print(f"The average rouge-l score in {args.input_file}: {calc_rl_score(args.input_file)}")
     print(f"The average ctrl score in {args.input_file}: {calc_ctrl_score(args.input_file, args.root_path)}")
-    med_nli_score = calc_med_nli_score(args.input_file, args.output_file)
-    print(f"The average med-nli score by sample or sentence in {args.input_file}: {med_nli_score[0]} {med_nli_score[1]}")
+    # med_nli_score = calc_med_nli_score(args.input_file, args.output_file)
+    # print(f"The average med-nli score by sample or sentence in {args.input_file}: {med_nli_score[0]} {med_nli_score[1]}")
