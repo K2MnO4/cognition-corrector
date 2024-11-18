@@ -1,8 +1,12 @@
+# Please do not run this baseline twice if there is alreay a same name output file!
+
 from transformers import pipeline
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from tqdm import tqdm
 
 import torch
+import argparse
+import os
 
 import jsonlines
 
@@ -38,12 +42,19 @@ def generate_response(model, tokenizer, prompt, max_new_tokens = 256, top_k = 50
     return  generated_text[prompt_length + 1:]
 
 if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--input_file", type=str) # project relative path
+    parser.add_argument("--output_file", type=str) # project relative path
+    parser.add_argument("--model_name", type=str, default="Locutusque/gpt2-large-medical")
+    args = parser.parse_args()
+
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    model_name = "Locutusque/gpt2-large-medical"
+    model_name = args.model_name
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = AutoModelForCausalLM.from_pretrained(model_name).to(device)
 
-    with jsonlines.open("Data Process/Datasets/pubmedqa/pub_data_copy.jsonl") as reader:
+    with jsonlines.open(args.input_file) as reader:
         reader = list(reader)
         for i, line in tqdm(enumerate(reader), total=len(reader)):
             question = line['question']
@@ -53,7 +64,7 @@ if __name__ == '__main__':
             response = generate_response(model, tokenizer, prompt)
 
             line.update({'generated_answer': response})
-            writer = jsonlines.open("Data Process/Datasets/pubmedqa/output_data.jsonl", mode='a')
+            writer = jsonlines.open(args.output_file, mode='a')
             writer.write(line)
             writer.close()
 
