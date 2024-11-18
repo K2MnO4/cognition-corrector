@@ -18,7 +18,7 @@ class Prompter:
         return f"{instruction} {question}"
 
 def encode_prompt(tokenizer, prompt):
-    return tokenizer.encode_plus(prompt, return_tensors='pt', padding='max_length', truncation=True, max_length=128)
+    return tokenizer.encode_plus(prompt, return_tensors='pt')
 
 def generate_response(model, tokenizer, prompt, max_new_tokens = 256, top_k = 50, top_p = 0.95):
     inputs = encode_prompt(tokenizer, prompt)
