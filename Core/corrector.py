@@ -19,10 +19,10 @@ class Prompter:
         return f"{instruction} {question}"
 
 def encode_prompt(tokenizer, prompt, max_length):
-    return tokenizer.encode_plus(prompt, return_tensors='pt', padding='max_length', truncation=True, max_length=max_length)
+    return tokenizer.encode_plus(prompt, return_tensors='pt')
 
 def generate_response(model, tokenizer, prompt, max_new_tokens = 512, top_k = 50, top_p = 0.95):
-    inputs = encode_prompt(tokenizer, prompt, max_new_tokens//2)
+    inputs = encode_prompt(tokenizer, prompt)
     input_ids = inputs['input_ids'].to(model.device)
     attention_mask = inputs['attention_mask'].to(model.device)
 
@@ -65,14 +65,14 @@ def loop_corrector(args, question, bg_prompt, bg_knowledge, model, tokenizer):
         if fact_score < args.threshold_fact:
             refine_prompt = f"The facutuality score for this knowlege: {bg_knowledge} is two low. Please refine the knowlege to improve its factuality"
             bg_knowledge = generate_response(model, tokenizer, refine_prompt)
-        print(f"current loop index: {fact_score_loop_num} fact_score: {fact_score}")
+        # print(f"current loop index: {fact_score_loop_num} fact_score: {fact_score}")
         fact_score_loop_num += 1
 
     # Get the background knowledge in the highest fact score
     sorted_knowledge_score = sorted(knowledge_score_dict.items(), key=lambda item: item[1], reverse=True)
     best_index = int(sorted_knowledge_score[0][0])
     best_bg_knowledge = bg_knowledge_list[best_index]
-    print(f"best index in fact score: {best_index}")
+    # print(f"best index in fact score: {best_index}")
 
     # 2.consistency scorer
     answer_prompt = f"Refer to the background knowledge: {best_bg_knowledge}, please answer the question with one paragraph: {question}"
@@ -88,14 +88,13 @@ def loop_corrector(args, question, bg_prompt, bg_knowledge, model, tokenizer):
         answer_score_dict[consist_loop_num] = consist_score
         if consist_score < args.threshold_consistency:
             refine_prompt = f"The consistency score between the knowlege: {best_bg_knowledge} and answer: {final_answer} is two low. Please refine the answer to improve its consistency"
-            final_answer = generate_response(model, tokenizer, refine_prompt, max_new_tokens=1024)
-        print(f"current loop index: {consist_loop_num} consist_score: {consist_score}")
+            final_answer = generate_response(model, tokenizer, refine_prompt, max_new_tokens=640)
+        # print(f"current loop index: {consist_loop_num} consist_score: {consist_score}")
         consist_loop_num += 1
     sorted_final_answer_score = sorted(answer_score_dict.items(), key=lambda item: item[1], reverse=True)
     best_index = int(sorted_final_answer_score[0][0])
     best_final_answer = final_answer_list[best_index] 
-
-    print(f"best index in consist score: {best_index}")
+    # print(f"best index in consist score: {best_index}")
 
     # 3.entailment scorer
 
@@ -125,12 +124,12 @@ if __name__ == '__main__':
             prompter = Prompter('')
             instruction = "Provide background knowledge to answer the following question."
             prompt = prompter.generate_prompt(instruction, question)
-            bg_knowledge = generate_response(model, tokenizer, prompt)
+            bg_knowledge = generate_response(model, tokenizer, prompt, max_new_tokens=256)
             
             response = loop_corrector(args, question, prompt, bg_knowledge, model, tokenizer)
 
             line.update({'generated_answer': response})
-            writer = jsonlines.open(args.output_file, mode='w')
+            writer = jsonlines.open(args.output_file, mode='a')
             writer.write(line)
             writer.close()
 
