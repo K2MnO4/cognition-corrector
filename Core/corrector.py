@@ -22,7 +22,7 @@ class Prompter:
 def encode_prompt(tokenizer, prompt):
     return tokenizer.encode_plus(prompt, return_tensors='pt')
 
-def generate_response(model, tokenizer, prompt, max_new_tokens = 128, top_k = 50, top_p = 0.95):
+def generate_response(model, tokenizer, prompt, max_new_tokens = 256, top_k = 50, top_p = 0.95):
     inputs = encode_prompt(tokenizer, prompt)
     input_ids = inputs['input_ids'].to(model.device)
     attention_mask = inputs['attention_mask'].to(model.device)
@@ -66,7 +66,7 @@ def loop_corrector(args, question, bg_prompt, bg_knowledge, model, tokenizer):
     # 1.factuality scorer
     while fact_score_loop_num < args.max_loop and fact_score < args.threshold_fact:
         fact_score = get_factuality_score(args.gptscore_model_name, bg_prompt, bg_knowledge)
-        # print(f"current loop index: {fact_score_loop_num} fact_score: {fact_score}")
+        # print(f"current loop index: {fact_score_loop_num} \n fact_score: {fact_score} \n knowledge: {bg_knowledge}")
         bg_knowledge_list.append(bg_knowledge)
         knowledge_score_dict[fact_score_loop_num] = fact_score
         if fact_score < args.threshold_fact:
@@ -83,19 +83,19 @@ def loop_corrector(args, question, bg_prompt, bg_knowledge, model, tokenizer):
     # 2.consistency scorer
     while consist_loop_num < args.max_loop and consist_score < args.threshold_consistency:
         consist_score = get_ctrl_score(best_bg_knowledge, final_answer)
-        print(f"current loop index: {consist_loop_num} \n consist_score: {consist_score} \n answer: {final_answer}")
+        # print(f"current loop index: {consist_loop_num} \n consist_score: {consist_score} \n answer: {final_answer}")
         if np.isnan(consist_score):
             consist_score = 0
         final_answer_list.append(final_answer)
         answer_score_dict[consist_loop_num] = consist_score
         if consist_score < args.threshold_consistency:
-            refine_prompt = f"The consistency score between the knowlege: {best_bg_knowledge} and answer: {final_answer} is two low. Please refine the answer to improve its consistency"
+            refine_prompt = f"The consistency score between response: {final_answer} and backgroud knowledge: {best_bg_knowledge} is too low, please refine response to answer the following question:{question}"
             final_answer = generate_response(model, tokenizer, refine_prompt)
         consist_loop_num += 1
     sorted_final_answer_score = sorted(answer_score_dict.items(), key=lambda item: item[1], reverse=True)
     best_index = int(sorted_final_answer_score[0][0])
     best_final_answer = final_answer_list[best_index] 
-    print(f"best index in consist score: {best_index}")
+    # print(f"best index in consist score: {best_index}")
 
     # 3.entailment scorer(if you use this scorer, please ban consistency scorer.)
     # while entail_loop_num < args.max_loop and entail_score < args.threshold_entailment:
@@ -143,6 +143,8 @@ if __name__ == '__main__':
             instruction = "Provide background knowledge to answer the following question."
             prompt = prompter.generate_prompt(instruction, question)
             bg_knowledge = generate_response(model, tokenizer, prompt)
+
+            # print(f"***instruct: {instruction} ***** question:{question} ***bg_known: {bg_knowledge}")
             
             response = loop_corrector(args, question, prompt, bg_knowledge, model, tokenizer)
 
