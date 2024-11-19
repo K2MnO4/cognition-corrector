@@ -9,7 +9,10 @@ def calc_rl_score(file_path):
     with jsonlines.open(file_path) as reader:
         reader = list(reader)
         for i, line in tqdm(enumerate(reader), total=len(reader)):
-            answer = line.get("answer", "").replace("\n", " ").replace("\t", " ")
+            answer = line.get("answer", "")
+            if isinstance(answer, list):
+                answer = answer[0]
+            answer.replace("\n", " ").replace("\t", " ")
             generated_answer = line.get("generated_answer", "").replace("\n", " ").replace("\t", " ")
 
             # Check if answer and generated_answer are empty

@@ -20,6 +20,8 @@ def calc_ctrl_score(file_path, root_path):
         for i, line in tqdm(enumerate(reader), total=len(reader)):
             question = line["question"]
             answer = line["answer"]
+            if isinstance(answer, list):
+                answer = answer[0]
             generated_answer = line["generated_answer"]
 
             if not generated_answer.strip():
