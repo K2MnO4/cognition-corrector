@@ -24,7 +24,7 @@ def generate_response(model, tokenizer, prompt, max_new_tokens = 256, top_k = 50
     inputs = encode_prompt(tokenizer, prompt)
     input_ids = inputs['input_ids'].to(model.device)
     attention_mask = inputs['attention_mask'].to(model.device)
-    with torch.no_grad:
+    with torch.no_grad():
         output = model.generate(
             input_ids,
             attention_mask=attention_mask,
@@ -67,7 +67,6 @@ if __name__ == '__main__':
             writer = jsonlines.open(args.output_file, mode='a')
             writer.write(line)
             writer.close()
-
 
     
   
