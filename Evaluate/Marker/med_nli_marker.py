@@ -52,6 +52,8 @@ def calc_med_nli_score(input_file_path, output_file_path):
             
             generated_answer_sent = sent_tokenize(generated_answer)  # split into individual sentences
             answer = line["answer"]
+            if isinstance(answer, list):
+                answer = answer[0]
             answer = truncate(tokenizer, answer)
             text = f"mednli: sentence1: {answer} sentence2: {generated_answer}"
             res = classify_text(model, tokenizer, text)
