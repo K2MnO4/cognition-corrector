@@ -4,7 +4,8 @@ model:"gpt2-large-medical"      f1:0.1296574832748517    rouge-l:0.1384742470606
 model:"medalpaca-lora-7b"       f1:0.19640008348164897   rouge-l:0.16458029692054693     ctrl:-2.2058885859346002     med-nil:0.258 0.17866709956709956
 model:"medalpaca-lora-7b_L"     f1:0.21754755607054171   rouge-l:0.18284032669738026     ctrl:                        med-nil:
 
-model:"alpaca-lora-7b"          f1:0.23574717852567711   rouge-l:0.19430895113091248     ctrl:-1.4355012349869714     med-nil:0.282 0.272
+model:"alpaca-lora-7b"          f1:0.23074717852567711   rouge-l:0.19430895113091248     ctrl:-1.4355012349869714     med-nil:0.282 0.272
+model:"alpaca-lora-7b_L"        f1:0.23565165819135705   rouge-l:0.2290237547694959      ctrl:     med-nil:
 
 MEDIQA2019
 model:"gpt2-large-medical"      f1:0.16501802982216493   rouge-l:0.1414737999490814      ctrl:-3.054327250906828      med-nil:0.4266666666666667 0.28951167602314193
