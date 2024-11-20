@@ -1,6 +1,9 @@
 PubMedQA
 model:"gpt2-large-medical"      f1:0.1296574832748517    rouge-l:0.13847424706065506     ctrl:-2.8074906457685187     med-nli:0.12236710130391174 0.1452657905667866
 model:"medalpaca-lora-7b"       f1:0.19640008348164897   rouge-l:0.16458029692054693     ctrl:-2.2058885859346002     med-nil:0.258 0.17866709956709956
+model:"medalpaca-lora-7b_L"     f1:0.21754755607054171   rouge-l:0.18284032669738026     ctrl:                        med-nil:
+
+
 model:"alpaca-lora-7b"          f1:0.23574717852567711   rouge-l:0.19430895113091248     ctrl:-1.4355012349869714     med-nil:0.282 0.272
 
 MEDIQA2019
@@ -10,7 +13,10 @@ model:"alpaca-lora-7b"          f1:0.11819633096189539   rouge-l:0.1183863166804
 
 MASH-QA
 model:"gpt2-large-medical"      f1:0.13854657578125928   rouge-l:0.140339808002781       ctrl:-2.5629032779231786     med-nil:0.4854014598540146 0.3346001218469333
+
 model:"medalpaca-lora-7b"       f1:0.18503804557942188   rouge-l:0.16220695633632326     ctrl:-1.8263556909487133     med-nil:0.7090909090909091 0.672581857536403
+model:"medalpaca-lora-7b_L"     f1:                      rouge-l:                        ctrl:                        med-nil:
+
 
 model:"alpaca-lora-7b"          f1:0.22023357333776372   rouge-l:0.18830172045439345     ctrl:-1.7915933030823743     med-nil:0.7436363636363637 0.6727554112554113
 model:"alpaca-lora-7b_L"        f1:0.21371852149216564   rouge-l:0.19962592452543348     ctrl:-1.8305361037720434     med-nil:0.835              0.6959761904761905
