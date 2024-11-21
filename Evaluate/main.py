@@ -14,7 +14,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--input_file",type=str)
-    # parser.add_argument("--output_file",type=str)
+    parser.add_argument("--output_file",type=str)
     parser.add_argument("--root_path", type=str, default=f"{current_directory}")
     args = parser.parse_args()
 

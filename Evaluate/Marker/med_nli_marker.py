@@ -6,7 +6,7 @@ import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from nltk.tokenize import sent_tokenize
 import nltk
-nltk.download('punkt')
+nltk.download('punkt_tab')
 
 def classify_text(model, tokenizer, text):
     encoding = tokenizer.encode_plus(text, return_tensors="pt")
@@ -40,7 +40,7 @@ def calc_med_nli_score(input_file_path, output_file_path):
     overall_comparison_val_list = []  # judge the relationship between generated answer and golden answer by individual sample
     sentence_comparison_val_list = []  # judge by each sentence of individual sample
 
-    with jsonlines.open(input_file_path) as reader, jsonlines.open(output_file_path, mode='w') as writer:
+    with jsonlines.open(input_file_path) as reader, jsonlines.open(output_file_path, mode='a') as writer:
         reader = list(reader)
         for i, line in tqdm(enumerate(reader), total=len(reader)):
             generated_answer = line["generated_answer"]
@@ -52,6 +52,8 @@ def calc_med_nli_score(input_file_path, output_file_path):
             
             generated_answer_sent = sent_tokenize(generated_answer)  # split into individual sentences
             answer = line["answer"]
+            if isinstance(answer, list):
+                answer = answer[0]
             answer = truncate(tokenizer, answer)
             text = f"mednli: sentence1: {answer} sentence2: {generated_answer}"
             res = classify_text(model, tokenizer, text)
@@ -73,4 +75,4 @@ def calc_med_nli_score(input_file_path, output_file_path):
                 sentence_comparison_val_list.append(0)  
 
             writer.write(line)
-    return [np.mean(overall_comparison_val_list), np.mean(sentence_comparison_val_list)]
+    return [np.nanmean(overall_comparison_val_list), np.nanmean(sentence_comparison_val_list)]

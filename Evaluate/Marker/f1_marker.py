@@ -10,6 +10,8 @@ def calc_f1_score(file_path):
         reader = list(reader)
         for i, line in tqdm(enumerate(reader), total=len(reader)):
             answer = line["answer"]
+            if isinstance(answer, list):
+                answer = answer[0]
             generated_answer = line["generated_answer"]
 
             if not generated_answer.strip():
@@ -37,4 +39,4 @@ def calc_f1_score(file_path):
 
             f1_score_list.append(f1_score)
 
-    return np.mean(f1_score_list)
+    return np.nanmean(f1_score_list)

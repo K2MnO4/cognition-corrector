@@ -20,6 +20,8 @@ def calc_ctrl_score(file_path, root_path):
         for i, line in tqdm(enumerate(reader), total=len(reader)):
             question = line["question"]
             answer = line["answer"]
+            if isinstance(answer, list):
+                answer = answer[0]
             generated_answer = line["generated_answer"]
 
             if not generated_answer.strip():
@@ -36,5 +38,5 @@ def calc_ctrl_score(file_path, root_path):
             data_list.append(data)
     ctrl_score = scorer.score(aspect="cons",  data=data_list, prefix=prefix_list)
 
-    return np.mean(ctrl_score)
+    return np.nanmean(ctrl_score)
 

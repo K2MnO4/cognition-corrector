@@ -1,0 +1,51 @@
+gpt-medical
+
+pubmedqa-50
+base: f1: 0.140 rouge-l: 0.138 ctrl: -3.073 nli: 0.02 0.12
+corrector: 0.113   0.118      -3.183           0.184  0.244
+
+LiveQAMed2017-all
+base:       0.180 0.151 -2.581  0.327  0.219
+corrector:  0.153 0.141 -2.66   0.475  0.232
+
+meshqa-50
+base:		0.151 0.146 -2.810  0.36  0.271
+corrector:  0.144 0.139 -2.705  0.563 0.339
+
+mediqa2019
+base:	   0.165 0.141 -3.054  0.427  0.290
+corrector: 0.138 0.121 -2.949  0.490  0.267
+
+
+
+alpha
+
+pubmedqa-50
+base:      0.223 0.171 -2.08   0.2  0.237
+corrector: 0.236 0.204 -2.065   0.46 0.574
+
+LiveQAMed2017-all
+base:      0.137 0.138  -1.89   0.404 0.346
+corrector: 0.190 0.168  -2.05   0.577 0.422
+
+mashqa-50
+base:      0.211 0.184  -1.92   0.78 0.655
+corrector: 0.214 0.187	-2.287	0.78 0.712
+
+mediqa2019
+base:	   0.119 0.118  -2.689  0.673 0.584
+corrector: 0.158 0.150  -2.755  0.74  0.605
+
+
+
+
+ /home/ubuntu-user/anaconda3/envs/nlpEnv/bin/python /home/ubuntu-user/K2MnO4/cognition-corrector/Core/baseline\(alpha\).py --input_file "Data Process/Datasets/pubmedqa/input_data.jsonl" --output_file "Data Process/Datasets/pubmedqa/base_output_data(alpha-50s).jsonl" 
+/home/ubuntu-user/anaconda3/envs/nlpEnv/bin/python /home/ubuntu-user/K2MnO4/cognition-corrector/Core/baseline\(alpha\).py --input_file "Data Process/Datasets/pubmedqa/input_data.jsonl" --output_file "Data Process/Datasets/pubmedqa/output_data(alpha-50s).jsonl" --model_name "lmsys/vicuna-7b-v1.5"
+
+/home/ubuntu-user/anaconda3/envs/nlpEnv/bin/python /home/ubuntu-user/K2MnO4/cognition-corrector/Core/corrector.py --input_file "Data Process/Datasets/pubmedqa/input_data.jsonl" --output_file "Data Process/Datasets/pubmedqa/corrector_output_data(gpt-medical).jsonl" --threshold_fact -0.5 --threshold_consistency -2 --threshold_entailment 0.7 --max_loop 3
+/home/ubuntu-user/anaconda3/envs/nlpEnv/bin/python /home/ubuntu-user/K2MnO4/cognition-corrector/Core/corrector\(alpha\).py --input_file "Data Process/Datasets/pubmedqa/input_data.jsonl" --output_file "Data Process/Datasets/pubmedqa/corrector_output_data.jsonl(alpha-50s-final)" --threshold_fact -0.5 --threshold_consistency -0.5 --threshold_entailment 0.7 --max_loop 3
+
+
+/home/ubuntu-user/anaconda3/envs/nlpEnv/bin/python /home/ubuntu-user/K2MnO4/cognition-corrector/Evaluate/main.py  --input_file "Data Process/Datasets/pubmedqa/corrector_output_data(gpt-medical).jsonl" --output_file "Evaluate/Output/med_nli_output(gpt2-medical).jsonl"
+
+/home/ubuntu-user/anaconda3/envs/nlpEnv/bin/python /home/ubuntu-user/K2MnO4/cognition-corrector/Evaluate/main.py  --input_file "Data Process/Datasets/pubmedqa/corrector_output_data.jsonl(alpha-50s-final)" --output_file "Evaluate/Output/corrector_med_nli_output(alpha-pubmedqa-50s-final).jsonl"
