@@ -70,7 +70,7 @@ def loop_corrector(args, question, bg_prompt, bg_knowledge, model, tokenizer):
         bg_knowledge_list.append(bg_knowledge)
         knowledge_score_dict[fact_score_loop_num] = fact_score
         if fact_score < args.threshold_fact:
-            refine_prompt = f"The facutuality score for this knowlege: {bg_knowledge} is two low. Please refine the knowlege to improve its factuality"
+            refine_prompt = f"The facutuality score for this knowledge: {bg_knowledge} is two low. Please refine the knowledge to improve its factuality"
             bg_knowledge = generate_response(model, tokenizer, refine_prompt)
         fact_score_loop_num += 1
 
@@ -89,7 +89,7 @@ def loop_corrector(args, question, bg_prompt, bg_knowledge, model, tokenizer):
         final_answer_list.append(final_answer)
         answer_score_dict[consist_loop_num] = consist_score
         if consist_score < args.threshold_consistency:
-            refine_prompt = f"The consistency score between response: {final_answer} and backgroud knowledge: {best_bg_knowledge} is too low, please refine response to answer the following question:{question}"
+            refine_prompt = f"The consistency score between response: {final_answer} and background knowledge: {best_bg_knowledge} is too low, please refine response to answer the following question:{question}"
             final_answer = generate_response(model, tokenizer, refine_prompt)
         consist_loop_num += 1
     sorted_final_answer_score = sorted(answer_score_dict.items(), key=lambda item: item[1], reverse=True)
@@ -106,7 +106,7 @@ def loop_corrector(args, question, bg_prompt, bg_knowledge, model, tokenizer):
     #     final_answer_list.append(final_answer)
     #     answer_score_dict[entail_loop_num] = entail_score
     #     if entail_score < args.threshold_entailment:
-    #         refine_prompt = f"The entailment score between the knowlege: {best_bg_knowledge} and answer: {final_answer} is two low. Please refine the answer to improve its entailment"
+    #         refine_prompt = f"The entailment score between the knowledge: {best_bg_knowledge} and answer: {final_answer} is two low. Please refine the answer to improve its entailment"
     #         final_answer = generate_response(model, tokenizer, refine_prompt)
     #     print(f"current loop index: {entail_loop_num} entail_score: {entail_score}")
     #     entail_loop_num += 1

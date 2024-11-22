@@ -66,7 +66,7 @@ def loop_corrector(args, question, bg_prompt, bg_knowledge, model, tokenizer):
         knowledge_score_dict[fact_score_loop_num] = fact_score
         if fact_score < args.threshold_fact:
             # refine_prompt = f"The facutuality score for knowlege: {bg_knowledge} is two low. Please refine the knowlege to improve its factuality"
-            refine_prompt = prompter.generate_prompt("Please refine the following backgroud knowlege to improve its factuality", f"{bg_knowledge}")
+            refine_prompt = prompter.generate_prompt("Please refine the following background knowledge to improve its factuality", f"{bg_knowledge}")
             bg_knowledge = generate_response(model, tokenizer, refine_prompt)
         fact_score_loop_num += 1
 
@@ -95,7 +95,7 @@ def loop_corrector(args, question, bg_prompt, bg_knowledge, model, tokenizer):
         answer_score_dict[consist_loop_num] = consist_score
         if consist_score < args.threshold_consistency:
             # refine_prompt = f"The consistency score between the knowlege: {best_bg_knowledge} and response: {final_answer} is two low. Please refine the response to improve its consistency"
-            refine_prompt = prompter.generate_prompt(f"The consistency score between response: {final_answer} and backgroud knowledge: {best_bg_knowledge} is too low, please refine response to answer the following question", question)
+            refine_prompt = prompter.generate_prompt(f"The consistency score between response: {final_answer} and background knowledge: {best_bg_knowledge} is too low, please refine response to answer the following question", question)
             final_answer = generate_response(model, tokenizer, refine_prompt)
         consist_loop_num += 1
     sorted_final_answer_score = sorted(answer_score_dict.items(), key=lambda item: item[1], reverse=True)
