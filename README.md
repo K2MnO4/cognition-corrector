@@ -1,8 +1,9 @@
 # cognition-corrector
-![The Overview of Interactive Cognition-Corrector of  Medical GQA System](https://github.com/user-attachments/assets/efe4dbb8-8d68-405b-9dd8-e27d18772d1e)
+![The Overview of Cognition-Corrector of  Medical GQA System](https://github.com/user-attachments/assets/083a2364-9334-49d8-a42e-03e66db8e304)
+
 
 ## Introduction
-This is a corrector for mitigating the hallucination in medical datasets.
+This is a congnition corrector for mitigating the hallucination in medical field.
 
 ## Structure
 
