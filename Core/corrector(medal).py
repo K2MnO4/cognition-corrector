@@ -21,10 +21,10 @@ from sent_similarity import Sent_Similar
 from CTRLEval.ctrleval import CTRLEval
 import numpy as np
 
-from loop_eval_utils import evaluate_response, evaluate_knowledge
+from Utils.loop_eval_utils import evaluate_response, evaluate_knowledge
 
 sys.path.append(f'/root/....../cognition-corrector')
-from loop_utils import main_loop
+from Utils.loop_utils import main_loop
 
 def strip_special_chars(input_str):
     "Remove special characters from string start/end"
