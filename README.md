@@ -1,9 +1,11 @@
 # cognition-corrector
-![The Overview of Cognition-Corrector of  Medical GQA System](https://github.com/user-attachments/assets/083a2364-9334-49d8-a42e-03e66db8e304)
+![The Overview of Cognition-Corrector of  Medical GQA System](https://github.com/user-attachments/assets/ac71996a-9448-4fc0-aea8-f64ad2928e6d)
+
+
 
 
 ## Introduction
-This is a congnition corrector for mitigating the hallucination in medical field.
+This is a congnition corrector for mitigating the hallucination in medical field. The method gradually enhances the factuality, consistency of generated answers through knowledge acquisition and consistency feedback.
 
 ## Structure
 
@@ -14,6 +16,7 @@ This is a congnition corrector for mitigating the hallucination in medical field
 
 - Evaluate: evaluation metrics tools.
 - templates: prompt templates.
+- visualize: result visualization.
 
 ## Environment Setting
 
@@ -27,7 +30,7 @@ pip install -r requirements.txt
 
 ## Results
 
-We run our baseline and corrector to generate candidate answers on a GPU: Nvidia GeForce RTX 3090. Besides, we also used the same device to evaluate our results.
+We run our baselines and correctors to generate candidate answers on one GPU: Nvidia GeForce RTX 3090. Besides, we also used the same device to evaluate our results.
 
 ### 1. PubMedQA
 
